@@ -25,17 +25,65 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $statuses = [
+        $flights = [
             [
-                'label' => 'Todo',
-                'value' => 'Todo',
+                'label' => 'A51',
+                'value' => 'A51',
             ],
             [
-                'label' => 'Done',
-                'value' => 'Done',
+                'label' => 'A52',
+                'value' => 'A52',
             ]
         ];
-        return view('create', compact('statuses'));
+
+
+        $bagazas =[
+
+            [
+            'label' => '0kg',
+            'value'=>'0kg',
+            ],
+            [
+            'label'=>'10kg',
+            'value'=>'10kg',
+            ],
+            [
+            'label'=>'20kg',
+            'value'=>'20kg',
+            ]
+        ];
+
+        $from =[
+            [
+                'label' => 'Vilnius',
+                'value'=>'Vilnius',
+            ],
+            [
+                'label'=>'Frankfurt',
+                'value'=>'Frankfurt',
+            ],
+            [
+                'label'=>'London',
+                'value'=>'London',
+            ]
+
+        ];
+        $to =[
+            [
+                'label' => 'Riga',
+                'value'=>'Riga',
+            ],
+            [
+                'label'=>'Paris',
+                'value'=>'Paris',
+            ],
+            [
+                'label'=>'Oslo',
+                'value'=>'Oslo',
+            ]
+
+        ];
+        return view('create', compact('bagazas', 'flights', 'from', 'to'));
     }
 
     /**
@@ -47,13 +95,25 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required'
+            'vardas' => 'required|max:100',
+            'pavarde' => 'required|max:100',
+            'ak' => 'required|min:11|max:11',
+            'FlightNumber'=>'required',
+            'bagazas'=>'required',
+            'from'=> 'required',
+            'to'=> 'required',
+            'comments'=> 'required','min:50|max:100'
         ]);
 
         $task = new Task();
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->status = $request->status;
+        $task->vardas = $request->vardas;
+        $task->pavarde = $request->pavarde;
+        $task->FlightNumber = $request->FlightNumber;
+        $task->ak = $request -> ak;
+        $task->bagazas =$request->bagazas;
+        $task->from=$request->from;
+        $task->to=$request->to;
+        $task->comments=$request->comments;
         $task->save();
         return redirect()->route('index');
     }
@@ -75,21 +135,7 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        $task = Task::findOrFail($id);
-        $statuses = [
-            [
-                'label' => 'Todo',
-                'value' => 'Todo',
-            ],
-            [
-                'label' => 'Done',
-                'value' => 'Done',
-            ]
-        ];
-        return view('edit', compact('statuses', 'task'));
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -98,19 +144,7 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $task = Task::findOrFail($id);
-        $request->validate([
-            'title' => 'required'
-        ]);
 
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->status = $request->status;
-        $task->save();
-        return redirect()->route('index');
-    }
 
     /**
      * Remove the specified resource from storage.

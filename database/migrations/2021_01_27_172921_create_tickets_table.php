@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTasksTable extends Migration
+class CreateTicketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,17 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->enum('status', ['Todo', 'Done'])->default('Todo');
+            $table->string('vardas');
+            $table->string('pavarde');
+            $table->string('ak');
+            $table->enum('FlightNumber', ['A51', 'A52'])->default('A51');
+            $table->enum('bagazas', ['0kg','10kg','20kg'])->default('0kg');
+            $table->enum('from', ['Vilnius','Frankfurt', 'London'])->default('Vilnius');
+            $table->enum('to', ['Riga','Paris', 'Oslo'])->default('Riga');
+            $table->text('comments');
+
             $table->timestamps();
+
         });
     }
 
